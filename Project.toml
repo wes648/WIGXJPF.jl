@@ -1,7 +1,4 @@
-name = "WIGXJPF"
+name = "WIGXJPF_jl"
 uuid = "c012394e-041f-4dac-954c-af2908646be0"
 authors = ["wes <jhwesterfield@ucdavis.edu>"]
 version = "0.1.0"
-
-[deps]
-BinDeps = "9e28174c-4ba2-5203-b857-d8d62c4213ee"
