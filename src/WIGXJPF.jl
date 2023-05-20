@@ -3,17 +3,17 @@ module WIGXJPF
 export wig3j, wig6j, wig9j
 
 
-include("../deps/deps.jl")
+#include("../deps/build.jl")
 
 function __init__()
     max_two_j = 1000
-    ccall((:wig_table_init, _jl_libwigxjpf),
-          Void,
+    ccall((:wig_table_init, libwigxjpf_shared.so),
+          Cvoid,
           (Cint, Cint),
           max_two_j, 9)
     Threads.@threads :static for i in 1:Threads.nthreads()
-    ccall((:wig_thread_temp_init, _jl_libwigxjpf),
-          Void,
+    ccall((:wig_thread_temp_init, libwigxjpf_shared.so),
+          Cvoid,
           (Cint,),
           max_two_j)
     end
@@ -26,7 +26,7 @@ doubled(f::Float64)::Int = Int(2.0*f)
 
 function wig3jj(j12::Integer, j22::Integer, j32::Integer,
                 m12::Integer, m22::Integer, m32::Integer)
-    ccall((:wig3jj, _jl_libwigxjpf),
+    ccall((:wig3jj, libwigxjpf_shared.so),
           Cdouble,
           (Cint, Cint, Cint,
            Cint, Cint, Cint),
@@ -40,7 +40,7 @@ wig3j(j1, j2, j3,
 
 function wig6jj(j12::Integer, j22::Integer, j32::Integer,
                 j42::Integer, j52::Integer, j62::Integer)
-    ccall((:wig6jj, _jl_libwigxjpf),
+    ccall((:wig6jj, libwigxjpf_shared.so),
           Cdouble,
           (Cint, Cint, Cint,
            Cint, Cint, Cint),
@@ -55,7 +55,7 @@ wig6j(j1, j2, j3,
 function wig9j(j12::Integer, j22::Integer, j32::Integer,
                j42::Integer, j52::Integer, j62::Integer,
                j72::Integer, j82::Integer, j92::Integer)
-    ccall((:wig9jj, _jl_libwigxjpf),
+    ccall((:wig9jj, libwigxjpf_shared.so),
           Cdouble,
           (Cint, Cint, Cint,
            Cint, Cint, Cint,
@@ -71,6 +71,5 @@ wig9j(j1, j2, j3,
                            doubled(j4), doubled(j5), doubled(j6),
                            doubled(j7), doubled(j8), doubled(j9))
 
-export wig3jj, wig3j, wig6jj, wig6j, wig9jj, wig9j
 
 end # module
