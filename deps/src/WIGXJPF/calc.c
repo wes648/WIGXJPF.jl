@@ -56,12 +56,12 @@ void print_max_factiter(int lim)
     if ((maxfact) > wigxjpf_max_prime_decomp) {			\
       if (wigxjpf_max_prime_decomp == -1)			\
 	fprintf (stderr, "wigxjpf: "				\
-		 "No factorials table.  Abort.");		\
+		 "No factorials table.\n");			\
       else							\
 	fprintf (stderr, "wigxjpf: "				\
 		 "Too large factorial (%d!).  "			\
-		 "Increase MAX_FACT.  Abort.\n", (maxfact));	\
-      exit(1);							\
+		 "Increase MAX_FACT.\n", (maxfact));		\
+      wigxjpf_error();						\
     }								\
     ACCOUNT_MAX_FACT(maxfact);					\
   } while (0)
@@ -69,17 +69,16 @@ void print_max_factiter(int lim)
 #define CHECK_TEMP do {						\
     if (csi == NULL) {						\
       fprintf (stderr, "wigxjpf: "				\
-	       "Temp array not allocated.  (For this thread?)"	\
-	       "Abort.\n");					\
-      exit(1);							\
+	       "Temp array not allocated.  "			\
+	       "(For this thread?)\n");				\
+      wigxjpf_error();						\
     }							        \
     if (csi->inuse) {						\
       fprintf (stderr, "wigxjpf: "				\
 	       "Temp array already in use.  "			\
 	       "Running multi-threaded, "			\
-	       "but wigxjpf not compiled for that?  "		\
-	       "Abort.\n");					\
-      exit(1);							\
+	       "but wigxjpf not compiled for that?\n");		\
+      wigxjpf_error();						\
     }								\
     csi->inuse = 1;						\
   } while (0)
@@ -88,14 +87,14 @@ void print_max_factiter(int lim)
     if ((iter) > csi->max_iter) {			        \
       fprintf (stderr, "wigxjpf: "				\
 	       "More iterations (%d) than allocated "		\
-	       "in temp array.  Abort.\n", (iter));	        \
-      exit(1);							\
+	       "in temp array.\n", (iter));			\
+      wigxjpf_error();						\
     }							        \
     ACCOUNT_MAX_ITER(iter);				        \
   } while (0)
 
-void __attribute__ ((noinline)) delta_coeff(int two_a, int two_b, int two_c,
-					    struct prime_exponents *prefact_fpf)
+void WIGXJPF_NOINLINE delta_coeff(int two_a, int two_b, int two_c,
+				  struct prime_exponents *prefact_fpf)
 {
   /* Check maximum factorial. */
 
@@ -155,7 +154,7 @@ void calcsum_3j(struct wigxjpf_temp *csi,
   CHECK_MAX_PRIMEFACT_FACTORIAL(max_factorial);
 
   /* Limit: max fact = 3 * j + 1. */
-			  
+
   pexpo_set_max(CSI_MIN_NUME_FPF(csi),
 		FACTORIAL_PRIME_FACTOR(max_factorial)->num_blocks);
 
@@ -187,7 +186,7 @@ void calcsum_3j(struct wigxjpf_temp *csi,
     FACTORIAL_PRIME_FACTOR((two_j1 - two_m1) / 2 - kmin);
   const struct prime_exponents *p_d6 =
     FACTORIAL_PRIME_FACTOR((two_j1 + two_j2 - two_j3) / 2 - kmin);
-      
+
   struct prime_exponents *nume_fpf;
 
   nume_fpf = CSI_K_ITER_FPF(csi);
@@ -296,7 +295,7 @@ void factor_6j(struct wigxjpf_temp *csi,
   int two_d = two_j4;
   int two_e = two_j3;
   int two_f = two_j6;
-  
+
   int kmin = max4(two_a + two_b + two_e,
 		  two_c + two_d + two_e,
 		  two_a + two_c + two_f,
@@ -317,14 +316,14 @@ void factor_6j(struct wigxjpf_temp *csi,
 #endif
 
   /* What is the maximum factorial? */
-  
+
   int max_factorial = max4(kmax + 1,
 			   (two_a + two_b + two_c + two_d) / 2,
 			   (two_a + two_d + two_e + two_f) / 2,
 			   (two_b + two_c + two_e + two_f) / 2);
 
   CHECK_MAX_PRIMEFACT_FACTORIAL(max_factorial);
-  
+
   /* Limit 6j: max fact = 4 * j + 1. */
   /* Limit 9j: max fact = 5 * j + 1. */
 
@@ -360,7 +359,7 @@ void factor_6j(struct wigxjpf_temp *csi,
     FACTORIAL_PRIME_FACTOR((two_a + two_d + two_e + two_f) / 2 - kmin);
   const struct prime_exponents *p_d7 =
     FACTORIAL_PRIME_FACTOR((two_b + two_c + two_e + two_f) / 2 - kmin);
-      
+
   const struct prime_exponents *p_n1 =
     FACTORIAL_PRIME_FACTOR(kmin + 1);
 
@@ -526,12 +525,12 @@ void calcsum_9j(struct wigxjpf_temp *csi,
       FPF_DUMP("nume_triprod_f1_fpf", CSI_TRIPROD_Fx_FPF(csi,0));
       FPF_DUMP("nume_triprod_f2_fpf", CSI_TRIPROD_Fx_FPF(csi,1));
       FPF_DUMP("nume_triprod_f3_fpf", CSI_TRIPROD_Fx_FPF(csi,2));
- 
+
       pexpo_expand_sum3(CSI_NUME_TRIPROD_FPF(csi),
 			CSI_TRIPROD_Fx_FPF(csi,0),
 			CSI_TRIPROD_Fx_FPF(csi,1),
 			CSI_TRIPROD_Fx_FPF(csi,2));
-      
+
       FPF_DUMP("nume_triprod_fpf", CSI_NUME_TRIPROD_FPF(csi));
 
       /* And multiply by the inner delta coefficients. */
@@ -594,7 +593,7 @@ void calcsum_9j(struct wigxjpf_temp *csi,
       MWI_DUMP("sum_triprod_tmp", sum_triprod_tmp);
 
       mwi_copy(&csi->sum_prod, sum_triprod_tmp);
-      
+
       if ((two_k) & 1)
 	mwi_sub_mwi(&csi->sum_prod, &csi->triprod_tmp);
       else
@@ -659,9 +658,9 @@ struct wigxjpf_temp *wigxjpf_temp_alloc(int max_iter)
   if (temp == NULL)
     {
       fprintf (stderr,
-	       "wigxjpf: Memory allocation error (wigxjpf_temp), %zd bytes.",
+	       "wigxjpf: Memory allocation error (wigxjpf_temp), %zd bytes.\n",
 	       total_size);
-      exit(1);
+      wigxjpf_error();
     }
 
   size_t align_pf = (size_t) (temp + 1);
@@ -708,8 +707,8 @@ void wigxjpf_temp_free(struct wigxjpf_temp *temp)
   if (temp->inuse)
     {
       fprintf (stderr,
-	       "wigxjpf: Freeing temp array while still in use.  Abort.");
-      exit(1);
+	       "wigxjpf: Freeing temp array while still in use.\n");
+      wigxjpf_error();
     }
 
   mwi_free(&temp->sum_prod);

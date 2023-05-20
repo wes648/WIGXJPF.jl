@@ -22,6 +22,7 @@
 #define __WIGXJPF_MULTI_WORD_INT_H__
 
 #include "wigxjpf_config.h"
+#include "wigxjpf_error.h"
 
 #include <stdio.h>
 #include <inttypes.h>
@@ -100,14 +101,14 @@ static inline void mwi_realloc(struct multi_word_int *mwi,
   size_t alloc_size = mwi->nalloc * sizeof (mwi_u_word_t);
 
   mwi->w = (mwi_u_word_t*) realloc (mwi->w, alloc_size);
-  
+
   if (mwi->w == NULL)
     {
       fprintf (stderr,
 	       "wigxjpf: "
 	       "Memory allocation error (multi-word int), %zd bytes.\n",
 	       alloc_size);
-      exit(1);
+      wigxjpf_error();
     }
 }
 
@@ -239,7 +240,7 @@ static inline void mwi_sub_mwi(struct multi_word_int *mwi,
   size_t i;
   mwi_u_dword_t t, s;
   mwi_u_word_t carry = 0;
-  
+
   mwi_realloc(mwi, mwi->nw+1);
 
   mwi_u_word_t mwi_sign_bits  = MWI_FULL_SIGN_WORD(mwi->w[mwi->nw-1]);
@@ -255,7 +256,7 @@ static inline void mwi_sub_mwi(struct multi_word_int *mwi,
   else
     {
       mwi_realloc(mwi, term->nw+1);
-      
+
       for (i = 0; i < mwi->nw; i++)
 	MWI_SUB_KERNEL(mwi->w[i], mwi->w[i], term->w[i]);
       for ( ; i < term->nw; i++)

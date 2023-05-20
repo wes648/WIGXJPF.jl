@@ -31,8 +31,13 @@
 #if DEBUG_PRINT
 #define MWI_DUMP(name, mwi)  do { mwi_dump(name, mwi); } while (0)
 #define FPF_DUMP(name, fpf)  do { dump_fpf(name, fpf, -1); } while (0)
-#define FPF_DUMP_FACT(name, fpf)  do { dump_fpf(name, fpf, \
-						((const char *) fpf - (char *) wigxjpf_prime_factors_2) / (ssize_t) wigxjpf_prime_fact_stride); } while (0)
+#define FPF_DUMP_FACT(name, fpf)			\
+  do {							\
+    dump_fpf(name, fpf,					\
+	     ((const char *) fpf -			\
+	      (char *) wigxjpf_prime_factors_2) /	\
+	     (ssize_t) wigxjpf_prime_fact_stride);	\
+  } while (0)
 
 static void dump_fpf(const char *name, const struct prime_exponents *fpf,
 		     ssize_t fact)

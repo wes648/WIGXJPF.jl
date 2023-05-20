@@ -38,7 +38,7 @@ typedef uint32_t    u_prime_exp_t;
 #endif
 
 #if PRIME_LIST_USE_VECTOR
-typedef prime_exp_t v_prime_exp_t 
+typedef prime_exp_t v_prime_exp_t
 __attribute__ ((vector_size (PRIME_LIST_VECT_SIZE)));
 # define V_PRIME_EXP_T  v_prime_exp_t
 # define V_EXPO         v_expo
@@ -83,6 +83,9 @@ extern int    wigxjpf_max_prime_decomp;
 extern void *wigxjpf_prime_factors_base;
 extern void *wigxjpf_prime_factors_1;
 extern void *wigxjpf_prime_factors_2;
+#if WIGXJPF_IMPL_DOUBLE_FACTORIAL
+extern void *wigxjpf_prime_factors_3;
+#endif
 
 #define PRIME_FACTOR(x)							\
   ((struct prime_exponents*) (((char *) wigxjpf_prime_factors_1) +	\
@@ -91,6 +94,12 @@ extern void *wigxjpf_prime_factors_2;
 #define FACTORIAL_PRIME_FACTOR(x)					\
   ((struct prime_exponents*) (((char *) wigxjpf_prime_factors_2) +	\
 			      (size_t) (x) * wigxjpf_prime_fact_stride))
+
+#if WIGXJPF_IMPL_DOUBLE_FACTORIAL
+#define DOUBLE_FACTORIAL_PRIME_FACTOR(x)				\
+  ((struct prime_exponents*) (((char *) wigxjpf_prime_factors_3) +	\
+			      (size_t) (x) * wigxjpf_prime_fact_stride))
+#endif
 
 #define PRIME_FACTOR_UPDOWN(x, type, cast_type, direction_op) do {	\
     x = ((type *) (((cast_type *) x) direction_op			\
@@ -166,7 +175,7 @@ static inline void pexpo_keep_min(struct prime_exponents *keep_fpf,
   for (i = 0; i < keep_fpf->num_blocks; i++)
     {
       keep_fpf->expo[i] =
-	(in_fpf->expo[i] < keep_fpf->expo[i]) ? 
+	(in_fpf->expo[i] < keep_fpf->expo[i]) ?
 	in_fpf->expo[i] : keep_fpf->expo[i];
     }
 #else
@@ -204,7 +213,7 @@ static inline void pexpo_keep_min_in_as_diff(struct prime_exponents *keep_fpf,
       prime_exp_t tmp = in_fpf->expo[i] - keep_fpf->expo[i];
 
       keep_fpf->expo[i] =
-	(in_fpf->expo[i] < keep_fpf->expo[i]) ? 
+	(in_fpf->expo[i] < keep_fpf->expo[i]) ?
 	in_fpf->expo[i] : keep_fpf->expo[i];
 
       in_fpf->expo[i] = tmp;
@@ -262,7 +271,7 @@ static inline void pexpo_prime_factor(struct multi_word_int factor[2],
       up = up * up;
 
       fpf >>= 1;
-	  
+
       if (!fpf)
 	break;
 
@@ -276,15 +285,15 @@ static inline void pexpo_prime_factor(struct multi_word_int factor[2],
   mwi_set_one_mul_word(&factor[0], fact);
   *factor_active = 0;
   return;
-  
+
  full_mult:
   {
     int up_active = 0;
     int fact_active = 0;
- 
+
     mwi_set_one_mul_word(&temp->big_up[up_active], up);
     mwi_set_one_mul_word(&factor[fact_active], fact);
-  
+
     for ( ; ; )
       {
 	if (fpf & 1)
@@ -332,7 +341,7 @@ static inline void pexpo_evaluate(struct multi_word_int *big_prod,
       else
 	{
 	  mwi_mul_mwi(&temp->prod_pos[!active], &temp->prod_pos[active],
-		      &temp->factor[factor_active]);	
+		      &temp->factor[factor_active]);
 	  active = !active;
 	}
     }
@@ -353,10 +362,10 @@ static inline void pexpo_evaluate2(struct multi_word_int *big_prod_pos,
   for (i = 0; i < in_fpf->num_blocks * PRIME_LIST_VECT_BLOCK_ITEMS; i++)
     {
       prime_exp_t fpf = in_fpf->expo[i];
-      
+
       if (!fpf)
 	continue;
-      
+
       int64_t prime = wigxjpf_prime_list[i];
 
       if (fpf > 0)
@@ -372,7 +381,7 @@ static inline void pexpo_evaluate2(struct multi_word_int *big_prod_pos,
 	    {
 	      mwi_mul_mwi(&temp->prod_pos[!active_pos],
 			  &temp->prod_pos[active_pos],
-			  &temp->factor[factor_active]);	
+			  &temp->factor[factor_active]);
 	      active_pos = !active_pos;
 	    }
 	}
@@ -391,7 +400,7 @@ static inline void pexpo_evaluate2(struct multi_word_int *big_prod_pos,
 	    {
 	      mwi_mul_mwi(&temp->prod_neg[!active_neg],
 			  &temp->prod_neg[active_neg],
-			  &temp->factor[factor_active]);	
+			  &temp->factor[factor_active]);
 	      active_neg = !active_neg;
 	    }
 	}
@@ -556,7 +565,7 @@ static inline void pexpo_sum_sub7(struct prime_exponents *dest_fpf,
   for (i = 0; i < dest_fpf->num_blocks; i++)
     *(p_dest++) =
       *(p_a++) -
-      *(p_b++) - *(p_c++) - *(p_d++) - *(p_e++) - 
+      *(p_b++) - *(p_c++) - *(p_d++) - *(p_e++) -
       *(p_f++) - *(p_g++) - *(p_h++);
 }
 
@@ -582,7 +591,7 @@ static inline void pexpo_sum0_sub6(struct prime_exponents *dest_fpf,
   int i;
 
   for (i = 0; i < dest_fpf->num_blocks; i++)
-    *(p_dest++) = 
+    *(p_dest++) =
       - *(p_a++) - *(p_b++) - *(p_c++) - *(p_d++) - *(p_e++) - *(p_f++);
 }
 

@@ -54,7 +54,7 @@ static inline void DBL_FCN_POSTFIX(mwi_to)(DOUBLE_TYPE *d, int *exponent,
       di = DBL_MATH_FCN_LQ(ldexp)(di, -((int) i * (int) MWI_SHIFT_BITS));
       ds += di;
     }
-  
+
   wi = mwi->w[high];
   di = (DOUBLE_TYPE) ((mwi_s_word_t) wi);
   ds += di;
@@ -62,7 +62,7 @@ static inline void DBL_FCN_POSTFIX(mwi_to)(DOUBLE_TYPE *d, int *exponent,
   /* TODO: e3, w4 for _float128. */
 
   *d = ds;
-  
+
   /* Note, exponent is always divisible by two (for sqrt). */
   *exponent = (int) ((high) * MWI_SHIFT_BITS);
 }

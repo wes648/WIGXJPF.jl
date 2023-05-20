@@ -1,5 +1,9 @@
 #+TITLE: WIGXJPF
 
+A fork of jagot's WIGXJPF.jl with parallelization & up-to-date WIGXJPF
+
+Link to original [[https://github.com/jagot/WIGXJPF.jl]]
+
 *DEPRECATED* in favour of https://github.com/Jutho/WignerSymbols.jl
 
 [[https://travis-ci.org/jagot/WIGXJPF.jl][https://travis-ci.org/jagot/WIGXJPF.jl.svg?branch=master]]

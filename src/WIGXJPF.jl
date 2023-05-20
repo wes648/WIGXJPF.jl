@@ -1,5 +1,8 @@
 module WIGXJPF
 
+export wig3j, wig6j, wig9j
+
+
 include("../deps/deps.jl")
 
 function __init__()
@@ -8,14 +11,18 @@ function __init__()
           Void,
           (Cint, Cint),
           max_two_j, 9)
-    ccall((:wig_temp_init, _jl_libwigxjpf),
+    Threads.@threads :static for i in 1:Threads.nthreads()
+    ccall((:wig_thread_temp_init, _jl_libwigxjpf),
           Void,
           (Cint,),
           max_two_j)
+    end
 end
 
-doubled(i::Integer) = 2i
-doubled(r::Rational) = Int(2r)
+doubled(i::Integer)::Int = 2i
+doubled(r::Rational)::Int = Int(2r)
+doubled(f::Float64)::Int = Int(2.0*f)
+
 
 function wig3jj(j12::Integer, j22::Integer, j32::Integer,
                 m12::Integer, m22::Integer, m32::Integer)

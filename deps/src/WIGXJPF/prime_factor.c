@@ -19,6 +19,7 @@
  */
 
 #include "prime_factor.h"
+#include "wigxjpf_error.h"
 
 #include <string.h>
 #include <stddef.h>
@@ -30,6 +31,9 @@ int wigxjpf_max_prime_decomp = -1;
 void *wigxjpf_prime_factors_base = NULL;
 void *wigxjpf_prime_factors_1 = NULL;
 void *wigxjpf_prime_factors_2 = NULL;
+#if WIGXJPF_IMPL_DOUBLE_FACTORIAL
+void *wigxjpf_prime_factors_3;
+#endif
 
 size_t wigxjpf_fill_factors(int max_factorial)
 {
@@ -49,7 +53,7 @@ size_t wigxjpf_fill_factors(int max_factorial)
 
       wigxjpf_prime_factors_1 = NULL;
       wigxjpf_prime_factors_2 = NULL;
-      
+
       return 0;
     }
 
@@ -59,7 +63,7 @@ size_t wigxjpf_fill_factors(int max_factorial)
   /* Simple sieve of Eratosthenes to find all prime numbers up to
    * max_factorial.
    */
-  
+
   char *isprime;
   size_t isprime_size = (size_t) (max_factorial+1) * sizeof (char);
 
@@ -71,7 +75,7 @@ size_t wigxjpf_fill_factors(int max_factorial)
 	       "wigxjpf: "
 	       "Memory allocation error (isprimearray), %zd bytes.\n",
 	       isprime_size);
-      exit(1);
+      wigxjpf_error();
     }
 
   memset(isprime, 1, isprime_size);
@@ -111,7 +115,7 @@ size_t wigxjpf_fill_factors(int max_factorial)
 	       "wigxjpf: "
 	       "Memory allocation error (prime list), %zd bytes.\n",
 	       sizeof (uint32_t));
-      exit(1);
+      wigxjpf_error();
     }
 
   p = 0;
@@ -143,6 +147,10 @@ size_t wigxjpf_fill_factors(int max_factorial)
   size_t prime_factors_base_size =
     2 * prime_factor_size + cache_alignment;
 
+#if WIGXJPF_IMPL_DOUBLE_FACTORIAL
+  prime_factors_base_size += prime_factor_size;
+#endif
+
   wigxjpf_prime_factors_base =
     realloc (wigxjpf_prime_factors_base,
 	     prime_factors_base_size);
@@ -153,7 +161,7 @@ size_t wigxjpf_fill_factors(int max_factorial)
 	       "wigxjpf: "
 	       "Memory allocation error (prime factors), %zd bytes.\n",
 	       prime_factors_base_size);
-      exit(1);
+      wigxjpf_error();
     }
 
   size_t align_pf = (size_t) wigxjpf_prime_factors_base;
@@ -162,6 +170,9 @@ size_t wigxjpf_fill_factors(int max_factorial)
 
   wigxjpf_prime_factors_1 = (void *)  align_pf;
   wigxjpf_prime_factors_2 = (void *) (align_pf + prime_factor_size);
+#if WIGXJPF_IMPL_DOUBLE_FACTORIAL
+  wigxjpf_prime_factors_3 = (void *) (align_pf + 2 * prime_factor_size);
+#endif
 
   /* We now fill the prime_factors, by enumerating the base...
    * We play around with item 0 temporarily.
@@ -186,7 +197,7 @@ size_t wigxjpf_fill_factors(int max_factorial)
 	   * our destination table, we reset this exponent to zero,
 	   * and try the next.
 	   */
-	  
+
 	  if (cur * wigxjpf_prime_list[p] <= (uint64_t) max_factorial)
 	    {
 	      tmp->expo[p]++;
@@ -198,7 +209,7 @@ size_t wigxjpf_fill_factors(int max_factorial)
 	  while (tmp->expo[p])
 	    {
 	      cur /= wigxjpf_prime_list[p];
-	      tmp->expo[p]--;	      
+	      tmp->expo[p]--;
 	    }
 	  /* We shall try the next exponent. */
 	  p++;
@@ -235,12 +246,31 @@ size_t wigxjpf_fill_factors(int max_factorial)
 	dest->num_blocks = add->num_blocks;
     }
 
+#if WIGXJPF_IMPL_DOUBLE_FACTORIAL
+  memset (DOUBLE_FACTORIAL_PRIME_FACTOR(0), 0, wigxjpf_prime_fact_stride);
+  memset (DOUBLE_FACTORIAL_PRIME_FACTOR(1), 0, wigxjpf_prime_fact_stride);
+
+  for (i = 2; i <= max_factorial; i++)
+    {
+      struct prime_exponents *add  = PRIME_FACTOR(i);
+      struct prime_exponents *src  = DOUBLE_FACTORIAL_PRIME_FACTOR(i-2);
+      struct prime_exponents *dest = DOUBLE_FACTORIAL_PRIME_FACTOR(i);
+
+      for (p = 0; p < num_primes; p++)
+	dest->expo[p] = src->expo[p] + add->expo[p];
+
+      dest->num_blocks = src->num_blocks;
+      if (add->num_blocks > dest->num_blocks)
+	dest->num_blocks = add->num_blocks;
+    }
+#endif
+
   free(isprime);
 
   /* We need a larger type for the exponents if there is any
    * danger of overflow.
    *
-   * The worst formula is 9j, which contain 
+   * The worst formula is 9j, which contain
    * 3*(factor6j:(1add+7sub)+delta:(3add+1sub)+coeff:1add) and
    * 6*(delta:(3add+1sub)).  I.e. 3*(5add+8sub)=15add+8sub
    * and 18add+6sub.  Worst case 35 added.
@@ -255,14 +285,14 @@ size_t wigxjpf_fill_factors(int max_factorial)
   /* We can never pick up more than @max_factorial factors of [2] during the
    * factorials.  I.e. FACTORIAL_PRIME_FACTOR(i)->expo[0] is always < i.
    */
-  
-  if ((uint32_t) max_factorial * /*50*/5 > max_allowed)
+
+  if ((uint32_t) max_factorial * 50 > max_allowed)
     {
       fprintf (stderr,
 	       "wigxjpf: "
 	       "Type prime_exp_t too small!  "
 	       "Exponent for [2] could overflow.\n");
-      exit(1); 
+      wigxjpf_error();
     }
 
   wigxjpf_max_prime_decomp = max_factorial;
