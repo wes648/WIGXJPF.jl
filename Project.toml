@@ -11,3 +11,8 @@ Tar = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
 
 [compat]
 julia = "1.9"
+BufferedStreams = "^1.2.1"
+CodecZlib = "^0.7.3"
+HTTP = "^1.10.0"
+Tar = "^1.10.0"
+
