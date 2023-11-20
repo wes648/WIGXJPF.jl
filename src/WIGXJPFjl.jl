@@ -1,4 +1,4 @@
-module WIGXJPF_jl
+module WIGXJPFjl
 
 export wig3j, wig6j, wig9j
 
