@@ -2,6 +2,7 @@ name = "WIGXJPFjl"
 uuid = "c012394e-041f-4dac-954c-af2908646be0"
 authors = ["wes <jhwesterfield@ucdavis.edu>"]
 version = "0.1.0"
+repo = "https://github.com/wes648/WIGXJPFjl.jl"
 
 [deps]
 BufferedStreams = "e1450e63-4bb3-523b-b2a4-4ffa8c0fd77d"

@@ -1,4 +1,4 @@
-using WIGXJPF
+using WIGXJPFjl
 using Base.Test
 
 # write your own tests here
