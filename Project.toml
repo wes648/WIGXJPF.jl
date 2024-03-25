@@ -2,7 +2,7 @@ name = "WIGXJPFjl"
 uuid = "c012394e-041f-4dac-954c-af2908646be0"
 authors = ["wes <jhwesterfield@ucdavis.edu>"]
 repo = "https://github.com/wes648/WIGXJPFjl.jl"
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 BinaryBuilder = "12aac903-9f7c-5d81-afc2-d9565ea332ae"
@@ -14,4 +14,4 @@ Tar = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
 [compat]
 BinaryBuilder = "^0.5.8"
 CodecZlib = "^0.7.4"
-julia = "^1.10.1"
+julia = "^1.10.2"

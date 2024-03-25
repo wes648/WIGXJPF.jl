@@ -10,12 +10,12 @@ version = v"1.11"
 
 
 sources = [
-    ArchiveSource("http://fy.chalmers.se/subatom/wigxjpf/wigxjpf-1.11.tar.gz", "5d078bbbf87c917d0df3c5e2204cbd8a51041517630ac84bdca728611ea2f12f"),
+    ArchiveSource("http://fy.chalmers.se/subatom/wigxjpf/wigxjpf-1.12.tar.gz", "758682aec89352723f10ed8d6133ebe88d75ea1aa4af940b1b6b60a3317b67da"),
 ]
 
 
 script = raw"""
-cd $WORKSPACE/srcdir/wigxjpf-1.11/
+cd $WORKSPACE/srcdir/wigxjpf-1.12/
 
 mkdir -p ../../destdir/lib/
 mkdir -p ../../destdir/bin/

@@ -1,14 +1,13 @@
 #+TITLE: WIGXJPF
 
+Updated to use WIGXJPF 1.12
+
 A fork of jagot's WIGXJPF.jl with parallelization & up-to-date WIGXJPF
-
 Link to original [[https://github.com/jagot/WIGXJPF.jl]]
-
 The original was deprecated in favour of https://github.com/Jutho/WignerSymbols.jl
 
 This is a Julia wrapper for the [[http://fy.chalmers.se/subatom/wigxjpf/][WIGXJPF]] library used to calculate Wigner 3j, 6j
-and 9j symbols. Since the original library is release under the [[https://www.gnu.org/licenses/gpl-3.0.en.html][GPLv3]]
-license, so is this Julia wrapper.
+and 9j symbols. Since the original library is release under the [[https://www.gnu.org/licenses/gpl-3.0.en.html][GPLv3]] license, so is this Julia wrapper.
 
 * Example usage
   The original library expects all arguments to multiplied by two but the wrapper handles that internally. For
