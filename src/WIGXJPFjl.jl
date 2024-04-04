@@ -1,6 +1,6 @@
 module WIGXJPFjl
 
-export wig3j, wig6j, wig9j
+export wig3j, wig6j, wig9j, wig3jj, wig6jj, wig9jj
 
 
 #include("../deps/build.jl")
@@ -53,7 +53,7 @@ wig6j(j1, j2, j3,
       j4, j5, j6) = wig6jj(doubled(j1), doubled(j2), doubled(j3),
                            doubled(j4), doubled(j5), doubled(j6))
 
-function wig9j(j12::Integer, j22::Integer, j32::Integer,
+function wig9jj(j12::Integer, j22::Integer, j32::Integer,
                j42::Integer, j52::Integer, j62::Integer,
                j72::Integer, j82::Integer, j92::Integer)
     ccall((:wig9jj, libstr*"/../deps/libwigxjpf_shared.so"),
