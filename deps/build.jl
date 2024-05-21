@@ -10,7 +10,7 @@ version = v"1.13"
 
 
 sources = [
-    ArchiveSource("http://fy.chalmers.se/subatom/wigxjpf/wigxjpf-latest.tar.gz", "758682aec89352723f10ed8d6133ebe88d75ea1aa4af940b1b6b60a3317b67da"),
+    ArchiveSource("http://fy.chalmers.se/subatom/wigxjpf/wigxjpf-latest.tar.gz", "90ab9bfd495978ad1fdcbb436e274d6f4586184ae290b99920e5c978d64b3e6a"),
 ]
 
 
