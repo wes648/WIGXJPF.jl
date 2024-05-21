@@ -15,7 +15,7 @@ sources = [
 
 
 script = raw"""
-cd $WORKSPACE/srcdir/wigxjpf-1.12/
+cd $WORKSPACE/srcdir/wigxjpf-1.13/
 
 mkdir -p ../../destdir/lib/
 mkdir -p ../../destdir/bin/
