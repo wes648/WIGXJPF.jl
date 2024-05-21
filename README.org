@@ -1,6 +1,6 @@
 #+TITLE: WIGXJPF
 
-Updated to use WIGXJPF 1.12
+Updated to use WIGXJPF 1.13
 
 A fork of jagot's WIGXJPF.jl with parallelization & up-to-date WIGXJPF
 Link to original [[https://github.com/jagot/WIGXJPF.jl]]

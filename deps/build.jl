@@ -6,11 +6,11 @@ using Pkg
 using Tar
 
 name = "wigxjpf"
-version = v"1.11"
+version = v"1.13"
 
 
 sources = [
-    ArchiveSource("http://fy.chalmers.se/subatom/wigxjpf/wigxjpf-1.12.tar.gz", "758682aec89352723f10ed8d6133ebe88d75ea1aa4af940b1b6b60a3317b67da"),
+    ArchiveSource("http://fy.chalmers.se/subatom/wigxjpf/wigxjpf-latest.tar.gz", "758682aec89352723f10ed8d6133ebe88d75ea1aa4af940b1b6b60a3317b67da"),
 ]
 
 
