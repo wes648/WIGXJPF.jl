@@ -2,7 +2,7 @@
 
 julia_version = "1.10.3"
 manifest_format = "2.0"
-project_hash = "4d46ec4724be512e42dab453e9dd5de82f17bb54"
+project_hash = "216ccf9559437cf05bd6b00553af0d1b0ce0ae55"
 
 [[deps.ArgParse]]
 deps = ["Logging", "TextWrap"]
@@ -45,9 +45,9 @@ version = "0.5.8"
 
 [[deps.BinaryBuilderBase]]
 deps = ["Bzip2_jll", "CodecZlib", "Downloads", "Gzip_jll", "HistoricalStdlibVersions", "InteractiveUtils", "JLLWrappers", "JSON", "LibGit2", "LibGit2_jll", "Libdl", "Logging", "OrderedCollections", "OutputCollectors", "Pkg", "Printf", "ProgressMeter", "REPL", "Random", "SHA", "Scratch", "SimpleBufferStream", "TOML", "Tar", "Tar_jll", "UUIDs", "XZ_jll", "Zstd_jll", "p7zip_jll", "pigz_jll", "unzip_jll"]
-git-tree-sha1 = "b6e70b712721dea3f586d97aa05e7b5eba96309c"
+git-tree-sha1 = "8489219d5487499ff5e068bbe9bfbac28d926833"
 uuid = "7f725544-6523-48cd-82d1-3fa08ff4056e"
-version = "1.29.0"
+version = "1.30.0"
 
 [[deps.BitFlags]]
 git-tree-sha1 = "2dc09997850d68179b69dafb58ae806167a32b1b"
@@ -505,9 +505,9 @@ version = "0.3.0"
 
 [[deps.TimeZones]]
 deps = ["Dates", "Downloads", "InlineStrings", "Mocking", "Printf", "Scratch", "TZJData", "Unicode", "p7zip_jll"]
-git-tree-sha1 = "96793c9316d6c9f9be4641f2e5b1319a205e6f27"
+git-tree-sha1 = "a6ae8d7a27940c33624f8c7bde5528de21ba730d"
 uuid = "f269a46b-ccf7-5d73-abea-4c690281aa53"
-version = "1.15.0"
+version = "1.17.0"
 
     [deps.TimeZones.extensions]
     TimeZonesRecipesBaseExt = "RecipesBase"
@@ -544,9 +544,9 @@ version = "5.4.6+0"
 
 [[deps.ZMQ]]
 deps = ["FileWatching", "PrecompileTools", "Sockets", "ZeroMQ_jll"]
-git-tree-sha1 = "8ac0d6e982660047f4ec5ae462acf4b92260f4b3"
+git-tree-sha1 = "71bcaf7e05ae0d19c58ffd764d0d1e28212296aa"
 uuid = "c2297ded-f4af-51ae-bb23-16f91089e4e1"
-version = "1.2.3"
+version = "1.2.5"
 
 [[deps.ZeroMQ_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "libsodium_jll"]
