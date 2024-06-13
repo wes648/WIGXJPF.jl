@@ -4,7 +4,6 @@ using Wigxjpf_jll
 
 export wig3j, wig6j, wig9j, wig3jj, wig6jj, wig9jj
 
-
 function __init__()
     max_two_j = 1000
     ccall((:wig_table_init, wigxjpf),
@@ -71,5 +70,13 @@ wig9j(j1, j2, j3,
                            doubled(j4), doubled(j5), doubled(j6),
                            doubled(j7), doubled(j8), doubled(j9))
 
+
+precompile(__init__, ())
+precompile(doubled, (Integer,))
+precompile(doubled, (Rational,))
+precompile(doubled, (Float64,))
+precompile(wig3jj, (Int, Int, Int, Int, Int, Int))
+precompile(wig6jj, (Int, Int, Int, Int, Int, Int))
+precompile(wig9jj, (Int, Int, Int, Int, Int, Int))
 
 end # module
