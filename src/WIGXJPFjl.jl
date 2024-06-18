@@ -71,12 +71,4 @@ wig9j(j1, j2, j3,
                            doubled(j7), doubled(j8), doubled(j9))
 
 
-precompile(__init__, ())
-precompile(doubled, (Integer,))
-precompile(doubled, (Rational,))
-precompile(doubled, (Float64,))
-precompile(wig3jj, (Int, Int, Int, Int, Int, Int))
-precompile(wig6jj, (Int, Int, Int, Int, Int, Int))
-precompile(wig9jj, (Int, Int, Int, Int, Int, Int))
-
 end # module
